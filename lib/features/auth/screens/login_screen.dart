@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scube_task/core/theme/app_colors.dart';
-import 'package:scube_task/features/auth/widgets/auth_text_field.dart';
-import 'package:scube_task/features/auth/widgets/primary_button.dart';
+import 'package:scube_task/features/auth/widgets/auth_widgets.dart';
+import 'package:scube_task/features/dashboard/screens/dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -26,9 +26,11 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text('Logged in successfully')));
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (_) => const DashboardScreen(),
+        ),
+      );
     }
   }
 
@@ -58,24 +60,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: EdgeInsets.all(width * 0.07),
-                      decoration: BoxDecoration(
-                        color: AppColors.white,
-                        shape: BoxShape.circle,
-                      ),
-                      child: Icon(
-                        Icons.track_changes_rounded,
-                        color: AppColors.primary,
-                        size: width * 0.22,
-                      ),
+                    Image.asset(
+                      'assets/images/logo.png',
+                      width: width * 0.25,
+                      height: width * 0.25,
+                      fit: BoxFit.contain,
                     ),
                     SizedBox(height: height * 0.04),
                     Text(
                       'SCUBE',
                       style: GoogleFonts.manrope(
                         color: AppColors.white,
-                        fontSize: width * 0.08,
+                        fontSize: width * 0.07,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.2,
                       ),
