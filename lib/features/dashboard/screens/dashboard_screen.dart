@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scube_task/core/theme/app_colors.dart';
 import 'package:scube_task/features/dashboard/widgets/data_card.dart';
+import 'package:scube_task/features/dashboard/widgets/donut_progress_indicator.dart';
+import 'package:scube_task/features/dashboard/widgets/data_view_screen.dart';
 import 'package:scube_task/features/dashboard/widgets/feature_button.dart';
 import 'package:scube_task/features/dashboard/widgets/no_data_screen.dart';
 
@@ -299,7 +301,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           accentColor: item.accentColor,
           data1: item.data1,
           data2: item.data2,
-          onTap: _openNoDataScreen,
+          onTap: _openDataViewScreen,
         ),
       );
       if (i != data.length - 1) {
@@ -377,17 +379,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
         child: Stack(
           alignment: Alignment.center,
           children: [
-            SizedBox(
-              width: size * 0.6,
-              height: size * 0.6,
-              child: CircularProgressIndicator(
-                value: 0.9,
-                strokeWidth: size * 0.10,
-                strokeCap: StrokeCap.round,
-                backgroundColor: const Color(0xFFE0E8EE),
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(const Color(0xFF2B89C7)),
-              ),
+            DonutProgressIndicator(
+              size: size * 0.6,
+              value: 0.9,
+              backgroundColor: const Color(0xFFE0E8EE),
+              valueColor: const Color(0xFF2B89C7),
             ),
             Column(
               mainAxisSize: MainAxisSize.min,
@@ -454,6 +450,14 @@ class _DashboardScreenState extends State<DashboardScreen> {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (_) => const NoDataScreen(),
+      ),
+    );
+  }
+
+  void _openDataViewScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const DataViewScreen(),
       ),
     );
   }
