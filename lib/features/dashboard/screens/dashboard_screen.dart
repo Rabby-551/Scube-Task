@@ -3,8 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:scube_task/core/theme/app_colors.dart';
 import 'package:scube_task/features/dashboard/widgets/data_card.dart';
 import 'package:scube_task/features/dashboard/widgets/feature_button.dart';
+import 'package:scube_task/features/dashboard/widgets/no_data_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
+  static const routeName = '/dashboard';
+
   const DashboardScreen({super.key});
 
   @override
@@ -296,14 +299,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           accentColor: item.accentColor,
           data1: item.data1,
           data2: item.data2,
-          onTap: () {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(
-                content: Text('${item.title} tapped'),
-                duration: const Duration(milliseconds: 900),
-              ),
-            );
-          },
+          onTap: _openNoDataScreen,
         ),
       );
       if (i != data.length - 1) {
@@ -447,17 +443,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
             (item) => FeatureButton(
               label: item.label,
               assetPath: item.assetPath,
-              onTap: () {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(
-                    content: Text('${item.label} tapped'),
-                    duration: const Duration(milliseconds: 900),
-                  ),
-                );
-              },
+              onTap: _openNoDataScreen,
             ),
           )
           .toList(),
+    );
+  }
+
+  void _openNoDataScreen() {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => const NoDataScreen(),
+      ),
     );
   }
 }

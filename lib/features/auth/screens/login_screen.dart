@@ -26,11 +26,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _submit() {
     if (_formKey.currentState?.validate() ?? false) {
-      Navigator.of(context).pushReplacement(
-        MaterialPageRoute(
-          builder: (_) => const DashboardScreen(),
-        ),
-      );
+      Navigator.of(context)
+          .pushReplacementNamed(DashboardScreen.routeName);
     }
   }
 

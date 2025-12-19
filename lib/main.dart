@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:scube_task/features/auth/screens/login_screen.dart';
+import 'package:scube_task/features/dashboard/screens/dashboard_screen.dart';
 import 'core/theme/app_colors.dart';
 
 
@@ -23,6 +24,9 @@ class ScubeTaskApp extends StatelessWidget {
         useMaterial3: true,
       ),
       home: const LoginScreen(),
+      routes: {
+        DashboardScreen.routeName: (_) => const DashboardScreen(),
+      },
     );
   }
 }
