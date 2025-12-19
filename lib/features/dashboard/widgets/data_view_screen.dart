@@ -92,86 +92,100 @@ class _DataViewScreenState extends State<DataViewScreen> {
                   horizontal: width * 0.045,
                   vertical: width * 0.035,
                 ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(width * 0.06),
-                    border: Border.all(color: borderColor, width: 1.2),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: width * 0.04),
-                      _SegmentedTabs(
-                        width: width,
-                        activeLabel: 'Data View',
-                        inactiveLabel: 'Revenue View',
-                        isLeftActive: _isDataView,
-                        onLeftTap: () => setState(() => _isDataView = true),
-                        onRightTap: () => setState(() => _isDataView = false),
+                child: Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(width * 0.06),
+                        border: Border.all(color: borderColor, width: 1.2),
                       ),
-                      SizedBox(height: width * 0.08),
-                      _RingSection(width: width, gauge: _gauge),
-                      SizedBox(height: width * 0.08),
-                      if (_isDataView) ...[
-                        _SegmentedTabs(
-                          width: width,
-                          activeLabel: 'Today Data',
-                          inactiveLabel: 'Custom Date Data',
-                          isLeftActive: _isTodayData,
-                          onLeftTap: () => setState(() => _isTodayData = true),
-                          onRightTap: () => setState(() => _isTodayData = false),
+                      child: Padding(
+                        padding: EdgeInsets.only(top: width * 0.18),
+                        child: Column(
+                          children: [
+                            _RingSection(width: width, gauge: _gauge),
+                            SizedBox(height: width * 0.08),
+                            if (_isDataView) ...[
+                              _SegmentedTabs(
+                                width: width,
+                                activeLabel: 'Today Data',
+                                inactiveLabel: 'Custom Date Data',
+                                isLeftActive: _isTodayData,
+                                onLeftTap: () => setState(() => _isTodayData = true),
+                                onRightTap: () => setState(() => _isTodayData = false),
+                              ),
+                              SizedBox(height: width * 0.06),
+                              if (_isTodayData) ...[
+                                _EnergyCard(
+                                  width: width,
+                                  borderColor: borderColor,
+                                  data: _energyData,
+                                  title: _energyTitle,
+                                  total: _totalLabel,
+                                ),
+                              ] else ...[
+                                _DateRangeBar(
+                                  width: width,
+                                  borderColor: borderColor,
+                                  fromController: _fromDateController,
+                                  toController: _toDateController,
+                                  onFromTap: () => _pickDate(_fromDateController),
+                                  onToTap: () => _pickDate(_toDateController),
+                                  onSearch: () => setState(() {}),
+                                ),
+                                SizedBox(height: width * 0.05),
+                                _EnergyCard(
+                                  width: width,
+                                  borderColor: borderColor,
+                                  data: _customEnergyData,
+                                  title: _energyTitle,
+                                  total: _customTotalLabel,
+                                ),
+                                SizedBox(height: width * 0.05),
+                                _EnergyCard(
+                                  width: width,
+                                  borderColor: borderColor,
+                                  data: _todayEnergyData,
+                                  title: _energyTitle,
+                                  total: _totalLabel,
+                                ),
+                              ],
+                              SizedBox(height: width * 0.08),
+                            ] else ...[
+                              _RevenueInfoCard(
+                                width: width,
+                                borderColor: borderColor,
+                                isExpanded: _isRevenueInfoExpanded,
+                                onToggle: () => setState(() {
+                                  _isRevenueInfoExpanded = !_isRevenueInfoExpanded;
+                                }),
+                                items: _revenueInfo,
+                              ),
+                              SizedBox(height: width * 0.08),
+                            ],
+                          ],
                         ),
-                        SizedBox(height: width * 0.06),
-                        if (_isTodayData) ...[
-                          _EnergyCard(
-                            width: width,
-                            borderColor: borderColor,
-                            data: _energyData,
-                            title: _energyTitle,
-                            total: _totalLabel,
-                          ),
-                        ] else ...[
-                          _DateRangeBar(
-                            width: width,
-                            borderColor: borderColor,
-                            fromController: _fromDateController,
-                            toController: _toDateController,
-                            onFromTap: () => _pickDate(_fromDateController),
-                            onToTap: () => _pickDate(_toDateController),
-                            onSearch: () => setState(() {}),
-                          ),
-                          SizedBox(height: width * 0.05),
-                          _EnergyCard(
-                            width: width,
-                            borderColor: borderColor,
-                            data: _customEnergyData,
-                            title: _energyTitle,
-                            total: _customTotalLabel,
-                          ),
-                          SizedBox(height: width * 0.05),
-                          _EnergyCard(
-                            width: width,
-                            borderColor: borderColor,
-                            data: _todayEnergyData,
-                            title: _energyTitle,
-                            total: _totalLabel,
-                          ),
-                        ],
-                        SizedBox(height: width * 0.08),
-                      ] else ...[
-                        _RevenueInfoCard(
+                      ),
+                    ),
+                    Positioned(
+                      top: -width * 0.03,
+                      left: 0,
+                      right: 0,
+                      child: Align(
+                        alignment: Alignment.topCenter,
+                        child: _SegmentedTabs(
                           width: width,
-                          borderColor: borderColor,
-                          isExpanded: _isRevenueInfoExpanded,
-                          onToggle: () => setState(() {
-                            _isRevenueInfoExpanded = !_isRevenueInfoExpanded;
-                          }),
-                          items: _revenueInfo,
+                          activeLabel: 'Data View',
+                          inactiveLabel: 'Revenue View',
+                          isLeftActive: _isDataView,
+                          onLeftTap: () => setState(() => _isDataView = true),
+                          onRightTap: () => setState(() => _isDataView = false),
                         ),
-                        SizedBox(height: width * 0.08),
-                      ],
-                    ],
-                  ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -848,7 +862,7 @@ class _DotLabel extends StatelessWidget {
             label,
             style: GoogleFonts.manrope(
               color: textColor,
-              fontSize: 16,
+              fontSize: 14,
               fontWeight: FontWeight.w800,
             ),
           ),
